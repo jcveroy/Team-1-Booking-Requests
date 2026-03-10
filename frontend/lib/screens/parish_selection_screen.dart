@@ -39,7 +39,7 @@ class _ParishSelectionScreenState extends State<ParishSelectionScreen> {
           children: [
             Text(
               'Choose a parish for your sacramental service:',
-              style: Theme.of(context).textTheme.headline6,
+              style: Theme.of(context).textTheme.titleLarge,
             ),
             SizedBox(height: 16),
             
