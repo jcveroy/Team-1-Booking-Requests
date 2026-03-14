@@ -12,6 +12,7 @@ const EucharistBooking = require('./EucharistBooking');
 const ReconciliationBooking = require('./ReconciliationBooking');
 const AnointingOfTheSickBooking = require('./AnointingOfTheSickBooking');
 const FuneralMassBooking = require('./FuneralMassBooking');
+const TokenBlacklist = require('./TokenBlacklist');
 
 // Define associations
 User.hasMany(Booking, {
@@ -165,5 +166,6 @@ module.exports = {
   ReconciliationBooking,
   AnointingOfTheSickBooking,
   FuneralMassBooking,
+  TokenBlacklist,
   syncDatabase,
 };

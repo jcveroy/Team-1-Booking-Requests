@@ -25,7 +25,7 @@ class AuthService {
   User? _currentUser;
 
   String? get accessToken => _accessToken;
-  String? get refreshToken => _refreshToken;
+  String? get storedRefreshToken => _refreshToken;
   User? get currentUser => _currentUser;
 
   bool get isAuthenticated => _accessToken != null && _currentUser != null;
@@ -201,7 +201,7 @@ class AuthService {
   }
 
   // Refresh access token
-  Future<bool> refreshToken() async {
+  Future<bool> refreshAccessToken() async {
     if (_refreshToken == null) return false;
 
     try {
@@ -254,7 +254,7 @@ class AuthService {
         );
       } else if (response.statusCode == 401) {
         // Try to refresh token and retry
-        bool refreshSuccess = await refreshToken();
+        bool refreshSuccess = await refreshAccessToken();
         if (refreshSuccess) {
           return await getCurrentUser(); // Retry after refresh
         } else {
@@ -319,7 +319,7 @@ class AuthService {
         );
       } else if (response.statusCode == 401) {
         // Try to refresh token and retry
-        bool refreshSuccess = await refreshToken();
+        bool refreshSuccess = await refreshAccessToken();
         if (refreshSuccess) {
           return await updateProfile(
             firstName: firstName,
@@ -378,7 +378,7 @@ class AuthService {
         );
       } else if (response.statusCode == 401) {
         // Try to refresh token and retry
-        bool refreshSuccess = await refreshToken();
+        bool refreshSuccess = await refreshAccessToken();
         if (refreshSuccess) {
           return await changePassword(
             oldPassword: oldPassword,

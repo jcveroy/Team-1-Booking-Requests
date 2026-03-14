@@ -107,6 +107,21 @@ app.use('/api/parishes', parishRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api-docs', apiDocsRoutes);
 
+// Cleanup expired tokens from blacklist daily
+if (process.env.NODE_ENV !== 'test') {
+  const { TokenBlacklist } = require('./models');
+  setInterval(async () => {
+    try {
+      const deletedCount = await TokenBlacklist.cleanupExpired();
+      if (deletedCount > 0) {
+        console.log(`🗑️  Cleaned up ${deletedCount} expired tokens from blacklist`);
+      }
+    } catch (error) {
+      console.error('Error cleaning up token blacklist:', error);
+    }
+  }, 24 * 60 * 60 * 1000); // Run every 24 hours
+}
+
 // 404 handler
 app.use((req, res) => {
   res.status(404).json({ 

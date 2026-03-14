@@ -36,8 +36,8 @@ class _LoginScreenState extends State<LoginScreen> {
       );
       
       if (success) {
-        // Navigate to home screen
-        Navigator.of(context).pushReplacementNamed('/home');
+        // Navigate to parish selection screen
+        Navigator.of(context).pushReplacementNamed('/parish-selection');
       }
     }
   }
@@ -48,8 +48,8 @@ class _LoginScreenState extends State<LoginScreen> {
     bool success = await authProvider.signInWithGoogle();
     
     if (success) {
-      // Navigate to home screen
-      Navigator.of(context).pushReplacementNamed('/home');
+      // Navigate to parish selection screen
+      Navigator.of(context).pushReplacementNamed('/parish-selection');
     }
   }
 
@@ -83,7 +83,7 @@ class _LoginScreenState extends State<LoginScreen> {
               Text(
                 'Welcome Back',
                 textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.headline6?.copyWith(
+                style: Theme.of(context).textTheme.titleLarge?.copyWith(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
                 ),
@@ -92,7 +92,7 @@ class _LoginScreenState extends State<LoginScreen> {
               Text(
                 'Sign in to your account',
                 textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.subtitle1,
+                style: Theme.of(context).textTheme.bodyLarge,
               ),
               SizedBox(height: 30),
               
@@ -209,7 +209,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   },
                   child: RichText(
                     text: TextSpan(
-                      style: Theme.of(context).textTheme.bodyText2,
+                      style: Theme.of(context).textTheme.bodyMedium,
                       children: [
                         TextSpan(text: 'Don\'t have an account? '),
                         TextSpan(
