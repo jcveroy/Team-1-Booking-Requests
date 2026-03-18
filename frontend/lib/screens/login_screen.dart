@@ -9,6 +9,8 @@ import '../utils/validators.dart';
 class LoginScreen extends StatefulWidget {
   static const routeName = '/login';
 
+  const LoginScreen({super.key});
+
   @override
   _LoginScreenState createState() => _LoginScreenState();
 }
@@ -59,17 +61,17 @@ class _LoginScreenState extends State<LoginScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Login'),
+        title: const Text('Login'),
         centerTitle: true,
       ),
       body: Padding(
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         child: Form(
           key: _formKey,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              SizedBox(height: 50),
+              const SizedBox(height: 50),
               
               // Logo/Icon
               Icon(
@@ -77,7 +79,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 size: 100,
                 color: Theme.of(context).primaryColor,
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               
               // Title
               Text(
@@ -88,13 +90,13 @@ class _LoginScreenState extends State<LoginScreen> {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               Text(
                 'Sign in to your account',
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.titleMedium,
               ),
-              SizedBox(height: 30),
+              const SizedBox(height: 30),
               
               // Email Field
               CustomTextField(
@@ -104,7 +106,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 validator: Validators.emailValidator,
                 prefixIcon: Icons.email,
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               
               // Password Field
               CustomTextField(
@@ -124,12 +126,12 @@ class _LoginScreenState extends State<LoginScreen> {
                   },
                 ),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               
               // Error Message
               if (authProvider.errorMessage != null)
                 Container(
-                  padding: EdgeInsets.all(8),
+                  padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
                     color: Colors.red[50],
                     borderRadius: BorderRadius.circular(4),
@@ -137,16 +139,16 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   child: Row(
                     children: [
-                      Icon(Icons.error, color: Colors.red, size: 16),
-                      SizedBox(width: 8),
+                      const Icon(Icons.error, color: Colors.red, size: 16),
+                      const SizedBox(width: 8),
                       Expanded(
                         child: Text(
                           authProvider.errorMessage!,
-                          style: TextStyle(color: Colors.red),
+                          style: const TextStyle(color: Colors.red),
                         ),
                       ),
                       IconButton(
-                        icon: Icon(Icons.close, size: 16),
+                        icon: const Icon(Icons.close, size: 16),
                         onPressed: () {
                           authProvider.clearError();
                         },
@@ -154,7 +156,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ],
                   ),
                 ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               
               // Login Button
               CustomButton(
@@ -162,20 +164,20 @@ class _LoginScreenState extends State<LoginScreen> {
                 isLoading: authProvider.isLoading,
                 onPressed: authProvider.isLoading ? null : _submitForm,
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               
               // Google Sign-In Button
               OutlinedButton.icon(
                 onPressed: authProvider.isLoading ? null : _signInWithGoogle,
-                icon: Icon(Icons.g_mobiledata_outlined, color: Colors.red),
-                label: Text(
+                icon: const Icon(Icons.g_mobiledata_outlined, color: Colors.red),
+                label: const Text(
                   'Sign in with Google',
                   style: TextStyle(
                     fontSize: 16,
                   ),
                 ),
                 style: OutlinedButton.styleFrom(
-                  padding: EdgeInsets.symmetric(vertical: 12),
+                  padding: const EdgeInsets.symmetric(vertical: 12),
                   side: BorderSide(
                     color: authProvider.isLoading ? Colors.grey : Colors.grey.shade400,
                   ),
@@ -184,7 +186,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               
               // Forgot Password Link
               Align(
@@ -193,11 +195,11 @@ class _LoginScreenState extends State<LoginScreen> {
                   onPressed: () {
                     // Navigate to forgot password screen
                   },
-                  child: Text('Forgot Password?'),
+                  child: const Text('Forgot Password?'),
                 ),
               ),
               
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               
               // Sign Up Link
               Align(
@@ -211,7 +213,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     text: TextSpan(
                       style: Theme.of(context).textTheme.bodyMedium,
                       children: [
-                        TextSpan(text: 'Don\'t have an account? '),
+                        const TextSpan(text: 'Don\'t have an account? '),
                         TextSpan(
                           text: 'Sign Up',
                           style: TextStyle(

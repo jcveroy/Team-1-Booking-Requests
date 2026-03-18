@@ -1,4 +1,6 @@
 import 'dart:convert';
+import 'package:http/src/response.dart';
+
 import '../models/parish.dart';
 import '../models/api_response.dart';
 import '../config/api_config.dart';
@@ -11,7 +13,7 @@ class ParishService {
   // Get all active parishes
   Future<ApiResponse<List<Parish>>> getAllParishes({String? token}) async {
     try {
-      late final response;
+      late final Response response;
       
       if (token != null) {
         response = await ApiConfig.getWithAuth(ApiConfig.parishesEndpoint, token);
@@ -49,7 +51,7 @@ class ParishService {
   // Get parish by ID
   Future<ApiResponse<Parish>> getParishById(int id, {String? token}) async {
     try {
-      late final response;
+      late final Response response;
       
       if (token != null) {
         response = await ApiConfig.getWithAuth('${ApiConfig.parishesEndpoint}/$id', token);
@@ -110,7 +112,7 @@ class ParishService {
         endpoint += '?${queryParams.join('&')}';
       }
 
-      late final response;
+      late final Response response;
       
       if (token != null) {
         response = await ApiConfig.getWithAuth(endpoint, token);
@@ -149,7 +151,7 @@ class ParishService {
   Future<ApiResponse<List<Parish>>> getParishesByService(String service, {String? token}) async {
     try {
       final endpoint = '${ApiConfig.parishesEndpoint}/by-service/$service';
-      late final response;
+      late final Response response;
       
       if (token != null) {
         response = await ApiConfig.getWithAuth(endpoint, token);

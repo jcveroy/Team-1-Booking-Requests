@@ -146,7 +146,7 @@ class AuthService {
       final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
 
       // Send the ID token to your backend
-      final response = await ApiConfig.post(ApiConfig.authEndpoint + '/google', json.encode({
+      final response = await ApiConfig.post('${ApiConfig.authEndpoint}/google', json.encode({
         'idToken': googleAuth.idToken,
       }));
 
