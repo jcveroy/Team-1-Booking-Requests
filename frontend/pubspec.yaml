@@ -37,7 +37,7 @@ dependencies:
   image_picker: ^1.0.4
 
   # File picker for uploading documents (birth cert, baptismal, CENOMAR, etc.)
-  file_picker: ^5.2.7
+  file_picker: ^8.0.0
 
   # Google Sign-In
   google_sign_in: ^6.1.5
