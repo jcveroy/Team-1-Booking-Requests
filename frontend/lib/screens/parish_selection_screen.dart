@@ -7,6 +7,8 @@ import '../widgets/custom_button.dart';
 class ParishSelectionScreen extends StatefulWidget {
   static const routeName = '/parish-selection';
 
+  const ParishSelectionScreen({super.key});
+
   @override
   _ParishSelectionScreenState createState() => _ParishSelectionScreenState();
 }
@@ -28,11 +30,11 @@ class _ParishSelectionScreenState extends State<ParishSelectionScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Select Parish'),
+        title: const Text('Select Parish'),
         centerTitle: true,
       ),
       body: Padding(
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -40,10 +42,10 @@ class _ParishSelectionScreenState extends State<ParishSelectionScreen> {
               'Choose a parish for your sacramental service:',
               style: Theme.of(context).textTheme.titleLarge,
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             
             if (parishProvider.isLoading)
-              Expanded(
+              const Expanded(
                 child: Center(
                   child: CircularProgressIndicator(),
                 ),
@@ -54,18 +56,18 @@ class _ParishSelectionScreenState extends State<ParishSelectionScreen> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(
+                      const Icon(
                         Icons.error_outline,
                         size: 64,
                         color: Colors.red,
                       ),
-                      SizedBox(height: 16),
+                      const SizedBox(height: 16),
                       Text(
                         parishProvider.errorMessage!,
                         textAlign: TextAlign.center,
-                        style: TextStyle(color: Colors.red),
+                        style: const TextStyle(color: Colors.red),
                       ),
-                      SizedBox(height: 16),
+                      const SizedBox(height: 16),
                       CustomButton(
                         text: 'Retry',
                         onPressed: () {
@@ -77,7 +79,7 @@ class _ParishSelectionScreenState extends State<ParishSelectionScreen> {
                 ),
               )
             else if (parishes.isEmpty)
-              Expanded(
+              const Expanded(
                 child: Center(
                   child: Text('No parishes available'),
                 ),
@@ -89,7 +91,7 @@ class _ParishSelectionScreenState extends State<ParishSelectionScreen> {
                   itemBuilder: (context, index) {
                     final parish = parishes[index];
                     return Card(
-                      margin: EdgeInsets.only(bottom: 8),
+                      margin: const EdgeInsets.only(bottom: 8),
                       child: ListTile(
                         leading: Icon(
                           Icons.church,
@@ -111,7 +113,7 @@ class _ParishSelectionScreenState extends State<ParishSelectionScreen> {
                                     .map((service) => Chip(
                                           label: Text(
                                             service,
-                                            style: TextStyle(fontSize: 10),
+                                            style: const TextStyle(fontSize: 10),
                                           ),
                                           backgroundColor: Colors.grey[200],
                                         ))
@@ -119,7 +121,7 @@ class _ParishSelectionScreenState extends State<ParishSelectionScreen> {
                               ),
                           ],
                         ),
-                        trailing: Icon(Icons.arrow_forward_ios),
+                        trailing: const Icon(Icons.arrow_forward_ios),
                         onTap: () {
                           parishProvider.selectParish(parish);
                           // Navigate back or to next screen

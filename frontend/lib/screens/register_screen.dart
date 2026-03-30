@@ -7,6 +7,8 @@ import '../widgets/text_field.dart';
 import '../utils/validators.dart';
 
 class RegisterScreen extends StatefulWidget {
+  const RegisterScreen({super.key});
+
   @override
   _RegisterScreenState createState() => _RegisterScreenState();
 }
@@ -37,7 +39,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
     if (_passwordController.text != _confirmPasswordController.text) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Passwords do not match')),
+        const SnackBar(content: Text('Passwords do not match')),
       );
       return;
     }
@@ -60,12 +62,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
     if (success && mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Registration successful! Please log in.')),
+        const SnackBar(content: Text('Registration successful! Please log in.')),
       );
       Navigator.of(context).pop();
     } else if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Registration failed. Please try again.')),
+        const SnackBar(content: Text('Registration failed. Please try again.')),
       );
     }
   }
@@ -74,16 +76,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Sign Up'),
+        title: const Text('Sign Up'),
       ),
       body: SingleChildScrollView(
-        padding: EdgeInsets.all(20),
+        padding: const EdgeInsets.all(20),
         child: Form(
           key: _formKey,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               Text(
                 'Create an Account',
                 style: Theme.of(context).textTheme.headlineSmall?.copyWith(
@@ -91,7 +93,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
                 textAlign: TextAlign.center,
               ),
-              SizedBox(height: 30),
+              const SizedBox(height: 30),
               CustomTextField(
                 controller: _firstNameController,
                 labelText: 'First Name',
@@ -99,7 +101,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 prefixIcon: Icons.person,
                 validator: Validators.nameValidator,
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               CustomTextField(
                 controller: _lastNameController,
                 labelText: 'Last Name',
@@ -107,7 +109,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 prefixIcon: Icons.person_outline,
                 validator: Validators.nameValidator,
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               CustomTextField(
                 controller: _emailController,
                 labelText: 'Email',
@@ -116,7 +118,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 keyboardType: TextInputType.emailAddress,
                 validator: Validators.emailValidator,
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               CustomTextField(
                 controller: _passwordController,
                 labelText: 'Password',
@@ -125,7 +127,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 obscureText: true,
                 validator: Validators.passwordValidator,
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               CustomTextField(
                 controller: _confirmPasswordController,
                 labelText: 'Confirm Password',
@@ -139,13 +141,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   return null;
                 },
               ),
-              SizedBox(height: 30),
+              const SizedBox(height: 30),
               CustomButton(
                 text: 'Sign Up',
                 onPressed: _isLoading ? null : _register,
                 isLoading: _isLoading,
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [

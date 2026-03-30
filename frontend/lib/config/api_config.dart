@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 import 'app_constants.dart';
 
 class ApiConfig {
-  static final String baseUrl = AppConstants.apiBaseUrl;
+  static const String baseUrl = AppConstants.apiBaseUrl;
   
   // Headers
   static Map<String, String> get baseHeaders {
