@@ -263,7 +263,8 @@ class _BaptismBookingScreenState extends State<BaptismBookingScreen> {
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop(); // Close dialog
-                Navigator.of(context).pop(); // Go back to home
+                //QA fix: Added true to trigger dashboard refresh
+                Navigator.of(context).pop(true); // Go back to home
               },
               child: const Text("OK"),
             )
@@ -315,7 +316,8 @@ class _BaptismBookingScreenState extends State<BaptismBookingScreen> {
         padding: const EdgeInsets.all(16),
         child: Center(
           child: ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 450),
+            //QA Fix: Changed from 450 to 600px
+            constraints: const BoxConstraints(maxWidth: 600),
             child: Form(
               key: _formKey,
               child: Column(
