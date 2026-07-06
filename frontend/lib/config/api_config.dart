@@ -6,7 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'app_constants.dart';
 
 class ApiConfig {
-  static const String baseUrl = AppConstants.apiBaseUrl;
+  static const String baseUrl = 'http://localhost:3000/api';
 
   // Headers
   static Map<String, String> get baseHeaders {
@@ -186,42 +186,42 @@ class ApiConfig {
     }
     return false;
   }
-  
+
   // Public HTTP Methods
   static Future<http.Response> get(String endpoint) async {
     final uri = Uri.parse('$baseUrl$endpoint');
-    
+
     return http.get(uri, headers: baseHeaders).timeout(AppConstants.apiTimeout);
   }
-  
+
   static Future<http.Response> post(String endpoint, dynamic body) async {
     final uri = Uri.parse('$baseUrl$endpoint');
-    
+
     return http.post(uri, headers: baseHeaders, body: body).timeout(AppConstants.apiTimeout);
   }
-  
+
   // File upload with authorization
   static Future<http.StreamedResponse> uploadFile(
-    String endpoint, 
-    String token, 
-    File file, 
+    String endpoint,
+    String token,
+    File file,
     String fieldName,
     {Map<String, String>? additionalFields}
   ) async {
     final uri = Uri.parse('$baseUrl$endpoint');
     final request = http.MultipartRequest('POST', uri);
-    
+
     // Add authorization header
     request.headers.addAll(getAuthHeaders(token));
-    
+
     // Add file
     request.files.add(await http.MultipartFile.fromPath(fieldName, file.path));
-    
+
     // Add additional fields if provided
     if (additionalFields != null) {
       request.fields.addAll(additionalFields);
     }
-    
+
     return request.send().timeout(AppConstants.apiTimeout);
   }
 }
