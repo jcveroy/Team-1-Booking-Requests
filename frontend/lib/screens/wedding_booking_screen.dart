@@ -592,7 +592,8 @@ class _WeddingBookingScreenState extends State<WeddingBookingScreen> {
               TextButton(
                 onPressed: () {
                   Navigator.of(context).pop(); // Close dialog
-                  Navigator.of(context).pop(); // Go back to home
+                  //UI Fix: Added true to trigger dashboard refresh
+                  Navigator.of(context).pop(true); // Go back to home
                 },
                 child: const Text("OK"),
               )
@@ -708,7 +709,8 @@ class _WeddingBookingScreenState extends State<WeddingBookingScreen> {
           key: _formKey,
           child: Center(
             child: ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 450),
+              //UI FIX: Change this from 450 to 600
+              constraints: const BoxConstraints(maxWidth: 600),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [

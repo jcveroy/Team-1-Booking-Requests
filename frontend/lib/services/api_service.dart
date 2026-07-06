@@ -14,7 +14,7 @@ class ApiService {
   Future<ApiResponse<dynamic>> get(String endpoint, {String? token}) async {
     try {
       late http.Response response;
-      
+
       if (token != null) {
         response = await ApiConfig.getWithAuth(endpoint, token);
       } else {
@@ -52,9 +52,32 @@ class ApiService {
 
   // Generic POST request
   Future<ApiResponse<dynamic>> post(String endpoint, dynamic body, {String? token}) async {
+    // 🚨 --- TEMPORARY OJT BYPASS --- 🚨
+    // If the app is trying to log in, intercept it and fake a success!
+    if (endpoint.contains('login') || endpoint.contains('signin')) {
+      print("🛑 BYPASS ACTIVE: Faking login for $endpoint");
+
+      // Add a 1-second delay so the UI shows the loading spinner naturally
+      await Future.delayed(const Duration(seconds: 1));
+
+      return ApiResponse(
+        success: true,
+        message: 'Mock login successful',
+        data: {
+          'token': 'fake-jwt-token-for-testing-12345',
+          'user': {
+            'id': 1,
+            'email': 'parishioner1@example.com',
+            'name': 'Test Parishioner',
+            'role': 'user'
+          }
+        },
+      );
+    }
+    // 🚨 ---------------------------- 🚨
     try {
       late http.Response response;
-      
+
       if (token != null) {
         response = await ApiConfig.postWithAuth(endpoint, token, json.encode(body));
       } else {
@@ -95,7 +118,7 @@ class ApiService {
   Future<ApiResponse<dynamic>> put(String endpoint, dynamic body, {String? token}) async {
     try {
       late http.Response response;
-      
+
       if (token != null) {
         response = await ApiConfig.putWithAuth(endpoint, token, json.encode(body));
       } else {
@@ -141,7 +164,7 @@ class ApiService {
   Future<ApiResponse<dynamic>> patch(String endpoint, dynamic body, {String? token}) async {
     try {
       late http.Response response;
-      
+
       if (token != null) {
         response = await ApiConfig.patchWithAuth(endpoint, token, json.encode(body));
       } else {
@@ -187,7 +210,7 @@ class ApiService {
   Future<ApiResponse<dynamic>> delete(String endpoint, {String? token}) async {
     try {
       late http.Response response;
-      
+
       if (token != null) {
         response = await ApiConfig.deleteWithAuth(endpoint, token);
       } else {
