@@ -6,7 +6,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'app_constants.dart';
 
 class ApiConfig {
-  static const String baseUrl = 'http://localhost:3000/api';
+  //Fix: Remove the double /api typo
+  //static const String baseUrl = 'http://localhost:3000/api';
+  static const String baseUrl = 'http://localhost:3000';
 
   // Headers
   static Map<String, String> get baseHeaders {

@@ -3,8 +3,8 @@ const helmet = require('helmet');
 const cors = require('cors');
 const morgan = require('morgan');
 const path = require('path');
-require('dotenv').config({ 
-  path: `.env.${process.env.NODE_ENV || 'development'}` 
+require('dotenv').config({
+  path: `.env.${process.env.NODE_ENV || 'development'}`
 });
 
 // Import routes
@@ -46,6 +46,7 @@ const allowedOrigins = process.env.ALLOWED_ORIGINS?.split(',') || [
   'http://localhost:8080', // Flutter web
   'http://localhost:3000',  // Android emulator
   'http://127.0.0.1:3000', // iOS simulator
+  'http://localhost:50614' //Current Flutter port
 ];
 
 app.use(cors({
@@ -150,7 +151,7 @@ if (process.env.NODE_ENV !== 'test') {
 
 // 404 handler
 app.use((req, res) => {
-  res.status(404).json({ 
+  res.status(404).json({
     error: 'Endpoint not found',
     path: req.path,
     method: req.method,
