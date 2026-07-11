@@ -29,12 +29,9 @@ class _BaptismBookingScreenState extends State<BaptismBookingScreen> {
   final TextEditingController _godparentsController = TextEditingController();
   final TextEditingController _contactController = TextEditingController();
   final TextEditingController _notesController = TextEditingController();
-  final TextEditingController _preferredParishController =
-      TextEditingController();
-  final TextEditingController _preferredDateController =
-      TextEditingController();
-  final TextEditingController _preferredTimeController =
-      TextEditingController();
+  final TextEditingController _preferredParishController = TextEditingController();
+  final TextEditingController _preferredDateController = TextEditingController();
+  final TextEditingController _preferredTimeController = TextEditingController();
 
   // Priest selection state
   int? _selectedPriestId;
@@ -49,13 +46,10 @@ class _BaptismBookingScreenState extends State<BaptismBookingScreen> {
     super.initState();
     // Load parishes for selection
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      final parishProvider =
-          Provider.of<ParishProvider>(context, listen: false);
+      final parishProvider = Provider.of<ParishProvider>(context, listen: false);
       final authProvider = Provider.of<AuthProvider>(context, listen: false);
-      final priestProvider =
-          Provider.of<PriestProvider>(context, listen: false);
+      final priestProvider = Provider.of<PriestProvider>(context, listen: false);
 
-      parishProvider.clearSelection();
       await parishProvider.loadAllParishes();
 
       final userParishId = authProvider.currentUser?.preferredParishId;
@@ -66,15 +60,8 @@ class _BaptismBookingScreenState extends State<BaptismBookingScreen> {
             .where((p) => p.id == userParishId)
             .firstOrNull;
         if (userParish != null) {
-          final bool offersService =
-              userParish.servicesOffered?.contains('baptism') ?? false;
-          final bool isAvailable = userParish.isActive && offersService;
-
-          if (isAvailable) {
-            parishProvider.selectParish(userParish);
-            await priestProvider.loadPriestsByParish(userParishId,
-                token: authProvider.token);
-          }
+          parishProvider.selectParish(userParish);
+          await priestProvider.loadPriestsByParish(userParishId, token: authProvider.token);
         }
       }
     });
@@ -96,16 +83,14 @@ class _BaptismBookingScreenState extends State<BaptismBookingScreen> {
       }
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text('Error selecting file: $e')));
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error selecting file: $e')));
       }
     }
   }
 
   Future<void> _uploadBirthCertificate() async {
     if (_birthCertificateFile == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Please select a file first')));
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Please select a file first')));
       return;
     }
 
@@ -113,8 +98,7 @@ class _BaptismBookingScreenState extends State<BaptismBookingScreen> {
     final token = authProvider.token;
 
     if (token == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Please login to upload files')));
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Please login to upload files')));
       return;
     }
 
@@ -136,22 +120,19 @@ class _BaptismBookingScreenState extends State<BaptismBookingScreen> {
           _uploadedFileData = response.data!['file'];
         });
         if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-              content: Text('Birth certificate uploaded successfully')));
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Birth certificate uploaded successfully')));
         }
       } else {
         if (mounted) {
           final errorMsg = response.errors?.isNotEmpty == true
               ? '${response.message}: ${response.errors!.first}'
               : (response.message ?? 'Upload failed');
-          ScaffoldMessenger.of(context)
-              .showSnackBar(SnackBar(content: Text(errorMsg)));
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(errorMsg)));
         }
       }
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text('Error uploading file: $e')));
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error uploading file: $e')));
       }
     } finally {
       if (mounted) {
@@ -180,27 +161,23 @@ class _BaptismBookingScreenState extends State<BaptismBookingScreen> {
     if (!_formKey.currentState!.validate()) return;
 
     final authProvider = Provider.of<AuthProvider>(context, listen: false);
-    final baptismProvider =
-        Provider.of<BaptismProvider>(context, listen: false);
+    final baptismProvider = Provider.of<BaptismProvider>(context, listen: false);
     final parishProvider = Provider.of<ParishProvider>(context, listen: false);
 
     // 1. Initial State Requirements Validation
     if (authProvider.currentUser == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("Please login to submit a booking.")));
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Please login to submit a booking.")));
       return;
     }
 
     if (parishProvider.selectedParish == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("Please select a parish.")));
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Please select a parish.")));
       return;
     }
 
     // Explicit Document Requirement Check
     if (_uploadedFileData == null) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text("Please upload the required PSA Birth Certificate.")));
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Please upload the required PSA Birth Certificate.")));
       return;
     }
 
@@ -281,13 +258,12 @@ class _BaptismBookingScreenState extends State<BaptismBookingScreen> {
         context: context,
         builder: (context) => AlertDialog(
           title: const Text("Booking Submitted"),
-          content: const Text(
-              "Your baptism booking request has been submitted. Parish will confirm availability."),
+          content: const Text("Your baptism booking request has been submitted. Parish will confirm availability."),
           actions: [
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop(); // Close dialog
-                Navigator.of(context).pop(true); // Go back to home
+                Navigator.of(context).pop(); // Go back to home
               },
               child: const Text("OK"),
             )
@@ -296,15 +272,12 @@ class _BaptismBookingScreenState extends State<BaptismBookingScreen> {
       );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-            content: Text(
-                baptismProvider.errorMessage ?? "Failed to submit booking.")),
+        SnackBar(content: Text(baptismProvider.errorMessage ?? "Failed to submit booking.")),
       );
     }
   }
 
-  Widget _buildSection(
-      {required String title, required List<Widget> children}) {
+  Widget _buildSection({required String title, required List<Widget> children}) {
     return Card(
       elevation: 2,
       margin: const EdgeInsets.symmetric(vertical: 10),
@@ -342,7 +315,7 @@ class _BaptismBookingScreenState extends State<BaptismBookingScreen> {
         padding: const EdgeInsets.all(16),
         child: Center(
           child: ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 450),
+            constraints: const BoxConstraints(maxWidth: 600),
             child: Form(
               key: _formKey,
               child: Column(
@@ -371,9 +344,7 @@ class _BaptismBookingScreenState extends State<BaptismBookingScreen> {
                         border: OutlineInputBorder(),
                       ),
                       validator: (value) =>
-                          value == null || value.trim().isEmpty
-                              ? "Required"
-                              : null,
+                      value == null || value.trim().isEmpty ? "Required" : null,
                     ),
                     const SizedBox(height: 12),
                     TextFormField(
@@ -384,7 +355,7 @@ class _BaptismBookingScreenState extends State<BaptismBookingScreen> {
                         border: OutlineInputBorder(),
                       ),
                       validator: (value) =>
-                          value == null || value.isEmpty ? "Required" : null,
+                      value == null || value.isEmpty ? "Required" : null,
                       readOnly: true,
                       onTap: () async {
                         FocusScope.of(context).requestFocus(FocusNode());
@@ -396,7 +367,7 @@ class _BaptismBookingScreenState extends State<BaptismBookingScreen> {
                         );
                         if (pickedDate != null) {
                           _dobController.text =
-                              "${pickedDate.year}-${pickedDate.month.toString().padLeft(2, '0')}-${pickedDate.day.toString().padLeft(2, '0')}";
+                          "${pickedDate.year}-${pickedDate.month.toString().padLeft(2, '0')}-${pickedDate.day.toString().padLeft(2, '0')}";
                         }
                       },
                     ),
@@ -413,10 +384,9 @@ class _BaptismBookingScreenState extends State<BaptismBookingScreen> {
                               labelText: "Father's Name *",
                               border: OutlineInputBorder(),
                             ),
-                            validator: (value) =>
-                                value == null || value.trim().isEmpty
-                                    ? "Required"
-                                    : null,
+                            validator: (value) => value == null || value.trim().isEmpty
+                                ? "Required"
+                                : null,
                           ),
                         ),
                         const SizedBox(width: 12),
@@ -427,10 +397,9 @@ class _BaptismBookingScreenState extends State<BaptismBookingScreen> {
                               labelText: "Mother's Name *",
                               border: OutlineInputBorder(),
                             ),
-                            validator: (value) =>
-                                value == null || value.trim().isEmpty
-                                    ? "Required"
-                                    : null,
+                            validator: (value) => value == null || value.trim().isEmpty
+                                ? "Required"
+                                : null,
                           ),
                         ),
                       ],
@@ -439,8 +408,7 @@ class _BaptismBookingScreenState extends State<BaptismBookingScreen> {
                     TextFormField(
                       controller: _godparentsController,
                       decoration: const InputDecoration(
-                        labelText:
-                            "Godparents' Names (separate with semicolon)",
+                        labelText: "Godparents' Names (separate with semicolon)",
                         border: OutlineInputBorder(),
                       ),
                     ),
@@ -453,9 +421,7 @@ class _BaptismBookingScreenState extends State<BaptismBookingScreen> {
                       ),
                       keyboardType: TextInputType.phone,
                       validator: (value) =>
-                          value == null || value.trim().isEmpty
-                              ? "Required"
-                              : null,
+                      value == null || value.trim().isEmpty ? "Required" : null,
                     ),
                   ]),
 
@@ -471,9 +437,9 @@ class _BaptismBookingScreenState extends State<BaptismBookingScreen> {
                           ),
                           items: parishProvider.parishes
                               .map((parish) => DropdownMenuItem(
-                                    value: parish.id,
-                                    child: Text(parish.name),
-                                  ))
+                            value: parish.id,
+                            child: Text(parish.name),
+                          ))
                               .toList(),
                           onChanged: (value) {
                             final parish = parishProvider.parishes
@@ -488,7 +454,7 @@ class _BaptismBookingScreenState extends State<BaptismBookingScreen> {
                             ).loadPriestsByParish(parish.id!);
                           },
                           validator: (value) =>
-                              value == null ? "Please select a parish" : null,
+                          value == null ? "Please select a parish" : null,
                         );
                       },
                     ),
@@ -501,7 +467,7 @@ class _BaptismBookingScreenState extends State<BaptismBookingScreen> {
                         border: OutlineInputBorder(),
                       ),
                       validator: (value) =>
-                          value == null || value.isEmpty ? "Required" : null,
+                      value == null || value.isEmpty ? "Required" : null,
                       readOnly: true,
                       onTap: () async {
                         FocusScope.of(context).requestFocus(FocusNode());
@@ -509,12 +475,11 @@ class _BaptismBookingScreenState extends State<BaptismBookingScreen> {
                           context: context,
                           initialDate: DateTime.now(),
                           firstDate: DateTime.now(),
-                          lastDate:
-                              DateTime.now().add(const Duration(days: 365)),
+                          lastDate: DateTime.now().add(const Duration(days: 365)),
                         );
                         if (pickedDate != null) {
                           _preferredDateController.text =
-                              "${pickedDate.year}-${pickedDate.month.toString().padLeft(2, '0')}-${pickedDate.day.toString().padLeft(2, '0')}";
+                          "${pickedDate.year}-${pickedDate.month.toString().padLeft(2, '0')}-${pickedDate.day.toString().padLeft(2, '0')}";
                         }
                       },
                     ),
@@ -527,7 +492,7 @@ class _BaptismBookingScreenState extends State<BaptismBookingScreen> {
                         border: OutlineInputBorder(),
                       ),
                       validator: (value) =>
-                          value == null || value.isEmpty ? "Required" : null,
+                      value == null || value.isEmpty ? "Required" : null,
                       readOnly: true,
                       onTap: () async {
                         FocusScope.of(context).requestFocus(FocusNode());
@@ -537,7 +502,7 @@ class _BaptismBookingScreenState extends State<BaptismBookingScreen> {
                         );
                         if (pickedTime != null && mounted) {
                           _preferredTimeController.text =
-                              "${pickedTime.hour.toString().padLeft(2, '0')}:${pickedTime.minute.toString().padLeft(2, '0')}";
+                          "${pickedTime.hour.toString().padLeft(2, '0')}:${pickedTime.minute.toString().padLeft(2, '0')}";
                         }
                       },
                     ),
@@ -545,15 +510,15 @@ class _BaptismBookingScreenState extends State<BaptismBookingScreen> {
                     Consumer<PriestProvider>(
                       builder: (context, priestProvider, _) {
                         final validPriestId = _selectedPriestId != null &&
-                                priestProvider.priests
-                                    .any((p) => p.id == _selectedPriestId)
+                            priestProvider.priests
+                                .any((p) => p.id == _selectedPriestId)
                             ? _selectedPriestId
                             : null;
                         return DropdownButtonFormField<int>(
                           value: validPriestId,
                           decoration: const InputDecoration(
                             labelText:
-                                "Preferred Priest (Optional) - Subject to availability",
+                            "Preferred Priest (Optional) - Subject to availability",
                             border: OutlineInputBorder(),
                           ),
                           items: [
@@ -563,9 +528,9 @@ class _BaptismBookingScreenState extends State<BaptismBookingScreen> {
                             ),
                             ...priestProvider.priests
                                 .map((priest) => DropdownMenuItem<int>(
-                                      value: priest.id,
-                                      child: Text(priest.fullName),
-                                    )),
+                              value: priest.id,
+                              child: Text(priest.fullName),
+                            )),
                           ],
                           onChanged: (value) {
                             setState(() {
@@ -593,8 +558,7 @@ class _BaptismBookingScreenState extends State<BaptismBookingScreen> {
                   _buildSection(title: "Required Documents", children: [
                     const Text(
                       "PSA Birth Certificate *",
-                      style:
-                          TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
                     ),
                     const SizedBox(height: 8),
                     const Text(
@@ -621,37 +585,36 @@ class _BaptismBookingScreenState extends State<BaptismBookingScreen> {
                       const SizedBox(height: 12),
                       _isUploadingFile
                           ? const Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                SizedBox(
-                                  height: 20,
-                                  width: 20,
-                                  child:
-                                      CircularProgressIndicator(strokeWidth: 2),
-                                ),
-                                SizedBox(width: 12),
-                                Text('Uploading...'),
-                              ],
-                            )
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          SizedBox(
+                            height: 20,
+                            width: 20,
+                            child: CircularProgressIndicator(strokeWidth: 2),
+                          ),
+                          SizedBox(width: 12),
+                          Text('Uploading...'),
+                        ],
+                      )
                           : ElevatedButton.icon(
-                              onPressed: _uploadedFileData == null
-                                  ? _uploadBirthCertificate
-                                  : null,
-                              icon: const Icon(Icons.cloud_upload),
-                              label: Text(
-                                _uploadedFileData != null
-                                    ? 'Uploaded Successfully'
-                                    : 'Upload Birth Certificate',
-                              ),
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: _uploadedFileData != null
-                                    ? Colors.green
-                                    : null,
-                                foregroundColor: _uploadedFileData != null
-                                    ? Colors.white
-                                    : null,
-                              ),
-                            ),
+                        onPressed: _uploadedFileData == null
+                            ? _uploadBirthCertificate
+                            : null,
+                        icon: const Icon(Icons.cloud_upload),
+                        label: Text(
+                          _uploadedFileData != null
+                              ? 'Uploaded Successfully'
+                              : 'Upload Birth Certificate',
+                        ),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: _uploadedFileData != null
+                              ? Colors.green
+                              : null,
+                          foregroundColor: _uploadedFileData != null
+                              ? Colors.white
+                              : null,
+                        ),
+                      ),
                     ],
                   ]),
 
@@ -660,8 +623,7 @@ class _BaptismBookingScreenState extends State<BaptismBookingScreen> {
                   // --- Main Submission Button with State Checking ---
                   Consumer<BaptismProvider>(
                     builder: (context, baptismProvider, _) {
-                      final bool isProcessing =
-                          baptismProvider.isLoading || _isSubmitting;
+                      final bool isProcessing = baptismProvider.isLoading || _isSubmitting;
 
                       return Center(
                         child: ElevatedButton(
@@ -677,16 +639,14 @@ class _BaptismBookingScreenState extends State<BaptismBookingScreen> {
                           ),
                           child: isProcessing
                               ? const SizedBox(
-                                  height: 20,
-                                  width: 20,
-                                  child: CircularProgressIndicator(
-                                    strokeWidth: 2,
-                                    valueColor: AlwaysStoppedAnimation<Color>(
-                                        Colors.white),
-                                  ),
-                                )
-                              : const Text("Submit Request",
-                                  style: TextStyle(fontSize: 16)),
+                            height: 20,
+                            width: 20,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                              valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                            ),
+                          )
+                              : const Text("Submit Request", style: TextStyle(fontSize: 16)),
                         ),
                       );
                     },

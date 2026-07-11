@@ -14,7 +14,7 @@ class ApiService {
   Future<ApiResponse<dynamic>> get(String endpoint, {String? token}) async {
     try {
       late http.Response response;
-      
+
       if (token != null) {
         response = await ApiConfig.getWithAuth(endpoint, token);
       } else {
@@ -51,10 +51,11 @@ class ApiService {
   }
 
   // Generic POST request
+  //FIX: Fixed this portion into the cleaned up POST request method
   Future<ApiResponse<dynamic>> post(String endpoint, dynamic body, {String? token}) async {
     try {
       late http.Response response;
-      
+
       if (token != null) {
         response = await ApiConfig.postWithAuth(endpoint, token, json.encode(body));
       } else {
@@ -95,7 +96,7 @@ class ApiService {
   Future<ApiResponse<dynamic>> put(String endpoint, dynamic body, {String? token}) async {
     try {
       late http.Response response;
-      
+
       if (token != null) {
         response = await ApiConfig.putWithAuth(endpoint, token, json.encode(body));
       } else {
@@ -141,7 +142,7 @@ class ApiService {
   Future<ApiResponse<dynamic>> patch(String endpoint, dynamic body, {String? token}) async {
     try {
       late http.Response response;
-      
+
       if (token != null) {
         response = await ApiConfig.patchWithAuth(endpoint, token, json.encode(body));
       } else {
@@ -187,7 +188,7 @@ class ApiService {
   Future<ApiResponse<dynamic>> delete(String endpoint, {String? token}) async {
     try {
       late http.Response response;
-      
+
       if (token != null) {
         response = await ApiConfig.deleteWithAuth(endpoint, token);
       } else {

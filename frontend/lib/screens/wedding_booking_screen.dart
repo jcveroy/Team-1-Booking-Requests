@@ -708,7 +708,7 @@ class _WeddingBookingScreenState extends State<WeddingBookingScreen> {
           key: _formKey,
           child: Center(
             child: ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 450),
+              constraints: const BoxConstraints(maxWidth: 600),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
