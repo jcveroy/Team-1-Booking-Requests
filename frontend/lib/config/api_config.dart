@@ -213,17 +213,21 @@ class ApiConfig {
     final uri = Uri.parse('$baseUrl$endpoint');
     final request = http.MultipartRequest('POST', uri);
 
-    // Add authorization header
-    request.headers.addAll(getAuthHeaders(token));
+    // FIX: Only inject the Bearer token and Accept header.
+    //Let Dart handle the multipart/form-data Content-Type automatically
 
-    // Add file
+    request.headers['Authorization'] = 'Bearer $token';
+    request.headers['Accept'] = 'application/json';
+
+    //Add file
     request.files.add(await http.MultipartFile.fromPath(fieldName, file.path));
 
-    // Add additional fields if provided
+    //Add additional fields if provided
     if (additionalFields != null) {
       request.fields.addAll(additionalFields);
     }
 
     return request.send().timeout(AppConstants.apiTimeout);
-  }
+}
+
 }
