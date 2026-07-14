@@ -340,7 +340,9 @@ class _MassIntentionScreenState extends State<MassIntentionScreen> {
                       },
                     ),
                     const SizedBox(height: 12),
+                    //FIX: Fix the RenderFlow overflow on the "Mass Time" dropdown
                     DropdownButtonFormField<String>(
+                      isExpanded: true, // <-- Add this line
                       value: _selectedType,
                       decoration: const InputDecoration(
                           labelText: "Intention Type *",
