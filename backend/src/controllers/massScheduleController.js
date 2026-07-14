@@ -124,26 +124,17 @@ exports.createMassSchedule = async (req, res, next) => {
   }
 };
 
+//FIX: Fix code to allow standard parishioners to fetch the schedule data
 // Get all mass schedules for a parish
 exports.getAllMassSchedules = async (req, res, next) => {
   try {
     const { parishId } = req.query;
 
-    // Check if user has permission to view mass schedules
-    if (req.user.role !== 'diocese_staff' && req.user.role !== 'diocese_admin') {
-      if (req.user.role === 'parish_admin' || req.user.role === 'parish_staff') {
-        // Parish-level users can only view schedules for their assigned parish
-        const userParishId = req.user.assignedParishId;
-        if (userParishId) {
-          req.query.parishId = userParishId;
-        }
-        // If user has no assignedParishId, proceed without parish filter
-        // (will return all active schedules)
-      } else {
-        return res.status(403).json({
-          error: 'Access denied',
-          message: 'Only authorized personnel can view mass schedules'
-        });
+    // Apply strict filtering for parish staff, but let standard users pass through
+    if (req.user.role === 'parish_admin' || req.user.role === 'parish_staff') {
+      const userParishId = req.user.assignedParishId;
+      if (userParishId) {
+        req.query.parishId = userParishId;
       }
     }
 
@@ -205,19 +196,12 @@ exports.getMassScheduleById = async (req, res, next) => {
       });
     }
 
-    // Check if user has permission to view this mass schedule
-    if (req.user.role !== 'diocese_staff' && req.user.role !== 'diocese_admin') {
-      if (req.user.role === 'parish_admin' || req.user.role === 'parish_staff') {
-        if (massSchedule.parishId !== req.user.assignedParishId) {
-          return res.status(403).json({
-            error: 'Access denied',
-            message: 'You can only view mass schedules for your assigned parish'
-          });
-        }
-      } else {
+    // Apply strict filtering for parish staff, but let standard users pass through
+    if (req.user.role === 'parish_admin' || req.user.role === 'parish_staff') {
+      if (massSchedule.parishId !== req.user.assignedParishId) {
         return res.status(403).json({
           error: 'Access denied',
-          message: 'Only authorized personnel can view mass schedules'
+          message: 'You can only view mass schedules for your assigned parish'
         });
       }
     }

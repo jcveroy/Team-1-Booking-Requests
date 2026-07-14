@@ -38,19 +38,16 @@ router.post('/', [
     .withMessage('Notes are too long'),
 ], massScheduleController.createMassSchedule);
 
-// Get all mass schedules (parish_admin, parish_staff, diocese_staff, diocese_admin only)
+// Get all mass schedules (Allow all authenticated users to read)
 router.get('/', [
-  authorizeRoles('parish_admin', 'parish_staff', 'diocese_staff', 'diocese_admin'),
   query('parishId')
     .optional()
     .isInt({ min: 1 })
     .withMessage('Valid parish ID is required if provided'),
 ], massScheduleController.getAllMassSchedules);
 
-// Get a specific mass schedule by ID (parish_admin, parish_staff, diocese_staff, diocese_admin only)
-router.get('/:id', [
-  authorizeRoles('parish_admin', 'parish_staff', 'diocese_staff', 'diocese_admin'),
-], massScheduleController.getMassScheduleById);
+// Get a specific mass schedule by ID (Allow all authenticated users to read)
+router.get('/:id', massScheduleController.getMassScheduleById);
 
 // Update a mass schedule (parish_admin, parish_staff, diocese_staff, diocese_admin only)
 router.put('/:id', [
