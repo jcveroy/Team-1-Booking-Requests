@@ -501,7 +501,8 @@ class AdminService {
     int? parishId,
   }) async {
     try {
-      String url = '/api/admin/priests';
+      // FIX: Changed from /api/admin/priests to the public endpoint
+      String url = '/api/priests';
       if (parishId != null) url += '?parishId=$parishId';
 
       final response = await ApiConfig.getWithAuth(url, token);
