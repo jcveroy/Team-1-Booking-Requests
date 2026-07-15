@@ -414,8 +414,10 @@ class _AnointingTheSickScreenState extends State<AnointingTheSickScreen> {
                         },
                       ),
                       const SizedBox(height: 12),
+                      //FIX: Adding the readOnly: true for user to forced to use the flutter pickers
                       TextFormField(
                         controller: _preferredDateController,
+                        readOnly: true, //Added this line
                         decoration: const InputDecoration(
                           labelText: "Preferred Date (Optional)",
                           hintText: "YYYY-MM-DD",
@@ -437,8 +439,10 @@ class _AnointingTheSickScreenState extends State<AnointingTheSickScreen> {
                         },
                       ),
                       const SizedBox(height: 12),
+          //FIX: Adding the readOnly: true for user to forced to use the flutter pickers
                       TextFormField(
                         controller: _preferredTimeController,
+                        readOnly: true, //Add this line
                         decoration: const InputDecoration(
                           labelText: "Preferred Time Slot (Optional)",
                           hintText: "HH:MM",

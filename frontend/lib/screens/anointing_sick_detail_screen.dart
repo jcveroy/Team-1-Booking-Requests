@@ -123,6 +123,15 @@ class _AnointingSickDetailScreenState extends State<AnointingSickDetailScreen> {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Preferred time slot is required')));
       return false;
     }
+
+    //FIX: Added this strict Regex validation block
+    final timeRegex = RegExp(r'^([01]\d|2[0-3]):([0-5]\d)$');
+    if (!timeRegex.hasMatch(_preferredTimeController.text.trim())){
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text('Please use a valid 24-hour time format(HH:MM)'),
+        backgroundColor: Colors.redAccent,
+      ));
+    }
     return true;
   }
 
@@ -167,8 +176,9 @@ class _AnointingSickDetailScreenState extends State<AnointingSickDetailScreen> {
         contactPhone: _contactPhoneController.text.trim(),
         location: _locationController.text.trim(),
         locationAddress: _locationAddressController.text.trim().isEmpty ? null : _locationAddressController.text.trim(),
-        preferredDate: _preferredDateController.text,
-        preferredTimeSlot: _preferredTimeController.text,
+        //FIX: Added trim to date and time
+        preferredDate: _preferredDateController.text.trim(),
+        preferredTimeSlot: _preferredTimeController.text.trim(),
         priestId: _selectedPriestId,
         notes: notesToAdd,
       );
@@ -447,9 +457,9 @@ class _AnointingSickDetailScreenState extends State<AnointingSickDetailScreen> {
         if (parishId != null) {
           priestProvider.loadPriestsByParish(parishId, token: authProvider.token);
         }
-        
-        final validPriestId = _selectedPriestId != null && 
-            priestProvider.priests.any((p) => p.id == _selectedPriestId) 
+
+        final validPriestId = _selectedPriestId != null &&
+            priestProvider.priests.any((p) => p.id == _selectedPriestId)
             ? _selectedPriestId : null;
         return Padding(
           padding: const EdgeInsets.only(bottom: 12),
@@ -480,8 +490,14 @@ class _AnointingSickDetailScreenState extends State<AnointingSickDetailScreen> {
     );
   }
 
+  //FIX: Updated this code to lock down the data pickers
   void _selectDate() async {
-    DateTime? picked = await showDatePicker(context: context, initialDate: DateTime.now(), firstDate: DateTime.now().add(const Duration(days: -7)), lastDate: DateTime.now().add(const Duration(days: 365 * 2)));
+    DateTime? picked = await showDatePicker(
+        context: context,
+        initialDate: DateTime.now(),
+     // firstDate: DateTime.now().add(const Duration(days: -7)),
+        firstDate: DateTime.now(),
+        lastDate: DateTime.now().add(const Duration(days: 365 * 2)));
     if (picked != null) setState(() => _preferredDateController.text = '${picked.year}-${picked.month.toString().padLeft(2, '0')}-${picked.day.toString().padLeft(2, '0')}');
   }
 
