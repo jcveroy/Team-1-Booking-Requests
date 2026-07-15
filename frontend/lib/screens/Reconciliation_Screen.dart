@@ -252,8 +252,7 @@ class _ReconciliationScreenState extends State<ReconciliationScreen> {
                       validator: (value) {
                         if (value == null || value.isEmpty) return "Required";
                         if (!value.contains('@')) return "Invalid email";
-                        return null;
-                      },
+                      }
                     ),
                     const SizedBox(height: 12),
                     TextFormField(
@@ -295,8 +294,10 @@ class _ReconciliationScreenState extends State<ReconciliationScreen> {
                       },
                     ),
                     const SizedBox(height: 12),
+                    //FIX: Add readOnly method
                     TextFormField(
                       controller: _preferredDateController,
+                      readOnly: true, //Added this line
                       decoration: const InputDecoration(
                         labelText: "Preferred Date *",
                         hintText: "YYYY-MM-DD",
@@ -319,16 +320,26 @@ class _ReconciliationScreenState extends State<ReconciliationScreen> {
                         }
                       },
                     ),
+                    //FIX: Add readOnly method
                     const SizedBox(height: 12),
                     TextFormField(
                       controller: _preferredTimeController,
+                      readOnly: true, //added this line
                       decoration: const InputDecoration(
                         labelText: "Preferred Time Slot *",
                         hintText: "HH:MM",
                         border: OutlineInputBorder(),
                       ),
-                      validator: (value) =>
-                          value == null || value.isEmpty ? "Required" : null,
+                      //FIX: Revised this code block
+                      validator: (value) {
+                        if (value == null || value.isEmpty ) return "Required";
+                        final timeRegex = RegExp(r'^([01]\d|2[0-3]):([0-5]\d)$');
+                        if (!timeRegex.hasMatch(value.trim())) {
+                            return "Use 24-hour format (HH:MM)";
+                          }
+                        return null;
+                        },
+
                       onTap: () async {
                         FocusScope.of(context).requestFocus(FocusNode());
                         TimeOfDay? pickedTime = await showTimePicker(
