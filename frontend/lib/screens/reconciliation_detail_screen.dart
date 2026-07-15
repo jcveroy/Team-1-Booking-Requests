@@ -112,7 +112,18 @@ class _ReconciliationDetailScreenState extends State<ReconciliationDetailScreen>
       return;
     }
     if (_preferredTimeController.text.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Preferred time slot is required')));
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text('Preferred time slot is required')));
+      return;
+    }
+
+    //Add this strict Regex validation block
+    final timeRegex = RegExp(r'^([01]\d|2[0-3]):([0-5]\d)$');
+    if (!timeRegex.hasMatch(_preferredTimeController.text.trim())) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text('Please use a valid 24-hour time format (HH:MM)'),
+        backgroundColor: Colors.redAccent,
+      ));
       return;
     }
 
