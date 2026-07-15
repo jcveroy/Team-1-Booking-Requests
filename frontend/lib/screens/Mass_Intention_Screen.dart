@@ -210,18 +210,20 @@ class _MassIntentionScreenState extends State<MassIntentionScreen> {
         ];
       }
 
+      //FIX: Updated upload with trim method
       final success = await massIntentionProvider.createMassIntention(
         type: mapType(_selectedType),
         intentionDetails: _intentionForController.text.trim(),
         donorName: _offeredByController.text.trim(),
 
-        //QA Fix: Add trim() to both uses of _dateController
-        dateRequested: formatDate(_dateController.text),
+        //QA Fix: Add trim() inside
+        dateRequested: formatDate(_dateController.text.trim()),
         parishId: parishProvider.selectedParish!.id!,
-        massSchedule: formatDate(_dateController.text),
+
+        massSchedule: formatDate(_dateController.text.trim()),
 
         //QA Fix: Add trim() method to the selected time.
-        preferredTime: _selectedTime,
+        preferredTime: _selectedTime?.trim(),
         notes: notesToAdd,
       );
 

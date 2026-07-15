@@ -272,9 +272,13 @@ class _MassIntentionDetailScreenState extends State<MassIntentionDetailScreen> {
         type: mapType(_selectedType!),
         intentionDetails: _intentionForController.text.trim(),
         donorName: _offeredByController.text.trim(),
-        dateRequested: _dateController.text,
+
+        //FIX: Chain trim method to the date strings
+
+        dateRequested: _dateController.text.trim(),
         parishId: _intention?.parishId ?? 0,
-        massSchedule: _dateController.text,
+        massSchedule: _dateController.text.trim(),
+
         preferredTime: _preferredTimeController.text.trim().isEmpty ? null : _normalizeTime(_preferredTimeController.text.trim()),
         notes: notesToAdd,
       );
@@ -364,9 +368,12 @@ class _MassIntentionDetailScreenState extends State<MassIntentionDetailScreen> {
         type: mapTypeForResubmit(_selectedType),
         intentionDetails: _intentionForController.text.trim(),
         donorName: _offeredByController.text.trim(),
-        dateRequested: _dateController.text,
+
+        //FIX: Chain trim method to the date strings
+
+        dateRequested: _dateController.text.trim(),
         parishId: _intention?.parishId ?? 0,
-        massSchedule: _dateController.text,
+        massSchedule: _dateController.text.trim(),
         preferredTime: _preferredTimeController.text.trim().isEmpty ? null : _normalizeTime(_preferredTimeController.text.trim()),
         notes: notes,
         status: 'pending',
