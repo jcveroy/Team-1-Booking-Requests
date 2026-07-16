@@ -537,22 +537,35 @@ class _FuneralMassDetailScreenState extends State<FuneralMassDetailScreen> {
       child: Text(title, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.blue)));
 
   void _selectDate() async {
-    DateTime? picked = await showDatePicker(context: context, initialDate: DateTime.now(), firstDate: DateTime.now().add(const Duration(days: -7)), lastDate: DateTime.now().add(const Duration(days: 365 * 2)));
+    DateTime? picked = await showDatePicker(context: context,
+        initialDate: DateTime.now(),
+        //updated this code to enforce datetime as the firstDate
+        firstDate: DateTime.now(), //.add(const Duration(days: -7)),
+        lastDate: DateTime.now().add(const Duration(days: 365 * 2)));
     if (picked != null) setState(() => _preferredDateController.text = '${picked.year}-${picked.month.toString().padLeft(2, '0')}-${picked.day.toString().padLeft(2, '0')}');
   }
 
   void _selectTime() async {
-    TimeOfDay? picked = await showTimePicker(context: context, initialTime: TimeOfDay.now());
+    TimeOfDay? picked = await showTimePicker(context: context,
+        initialTime: TimeOfDay.now());
     if (picked != null) setState(() => _preferredTimeController.text = '${picked.hour.toString().padLeft(2, '0')}:${picked.minute.toString().padLeft(2, '0')}');
   }
 
   void _selectWakeStartDate() async {
-    DateTime? picked = await showDatePicker(context: context, initialDate: DateTime.now(), firstDate: DateTime.now().add(const Duration(days: -30)), lastDate: DateTime.now().add(const Duration(days: 365 * 2)));
+    DateTime? picked = await showDatePicker(context: context,
+        initialDate: DateTime.now(),
+        //updated this as well
+        firstDate: DateTime.now(), //.add(const Duration(days: -30)),
+        lastDate: DateTime.now().add(const Duration(days: 365 * 2)));
     if (picked != null) setState(() => _wakeStartDateController.text = '${picked.year}-${picked.month.toString().padLeft(2, '0')}-${picked.day.toString().padLeft(2, '0')}');
   }
 
   void _selectWakeEndDate() async {
-    DateTime? picked = await showDatePicker(context: context, initialDate: DateTime.now(), firstDate: DateTime.now().add(const Duration(days: -30)), lastDate: DateTime.now().add(const Duration(days: 365 * 2)));
+    DateTime? picked = await showDatePicker(context: context,
+        initialDate: DateTime.now(),
+        //updated this
+        firstDate: DateTime.now(), //.add(const Duration(days: -30)),
+        lastDate: DateTime.now().add(const Duration(days: 365 * 2)));
     if (picked != null) setState(() => _wakeEndDateController.text = '${picked.year}-${picked.month.toString().padLeft(2, '0')}-${picked.day.toString().padLeft(2, '0')}');
   }
 

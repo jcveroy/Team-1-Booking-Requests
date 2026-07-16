@@ -150,21 +150,24 @@ class _FuneralMassScreenState extends State<FuneralMassScreen> {
       final success = await funeralMassProvider.createFuneralMassBooking(
         token: authProvider.token!,
         parishId: parishProvider.selectedParish!.id!,
+
         deceasedFullName: _deceasedNameController.text.trim(),
         representativeName: _contactPersonController.text.trim(),
         contactEmail: _emailController.text.trim(),
         contactPhone: _phoneController.text.trim(),
-        preferredDate: formatDate(_preferredDateController.text),
-        preferredTimeSlot: _preferredTimeController.text,
+
+        //Adding .trim() inside formatDate
+        preferredDate: formatDate(_preferredDateController.text.trim()),
+        preferredTimeSlot: _preferredTimeController.text.trim(),
         dateOfDeath: _dateOfDeathController.text.trim().isEmpty
             ? null
-            : formatDate(_dateOfDeathController.text),
+            : formatDate(_dateOfDeathController.text.trim()),
         wakeStartDate: _wakeStartDateController.text.trim().isEmpty
             ? null
-            : formatDate(_wakeStartDateController.text),
+            : formatDate(_wakeStartDateController.text.trim()),
         wakeEndDate: _wakeEndDateController.text.trim().isEmpty
             ? null
-            : formatDate(_wakeEndDateController.text),
+            : formatDate(_wakeEndDateController.text.trim()),
         wakeLocation: _wakeLocationController.text.trim().isEmpty
             ? null
             : _wakeLocationController.text.trim(),
@@ -279,8 +282,10 @@ class _FuneralMassScreenState extends State<FuneralMassScreen> {
                             : null,
                       ),
                       const SizedBox(height: 12),
+                      //FIX: Adding readOnly: true
                       TextFormField(
                         controller: _dateOfDeathController,
+                        readOnly: true,
                         decoration: const InputDecoration(
                           labelText: "Date of Death (Optional)",
                           hintText: "YYYY-MM-DD",
@@ -309,6 +314,7 @@ class _FuneralMassScreenState extends State<FuneralMassScreen> {
                     children: [
                       TextFormField(
                         controller: _wakeStartDateController,
+                        readOnly: true,
                         decoration: const InputDecoration(
                           labelText: "Wake Start Date (Optional)",
                           hintText: "YYYY-MM-DD",
@@ -332,6 +338,7 @@ class _FuneralMassScreenState extends State<FuneralMassScreen> {
                       const SizedBox(height: 12),
                       TextFormField(
                         controller: _wakeEndDateController,
+                        readOnly: true,
                         decoration: const InputDecoration(
                           labelText: "Wake End Date (Optional)",
                           hintText: "YYYY-MM-DD",
@@ -452,6 +459,7 @@ class _FuneralMassScreenState extends State<FuneralMassScreen> {
                       const SizedBox(height: 12),
                       TextFormField(
                         controller: _preferredDateController,
+                        readOnly: true,
                         decoration: const InputDecoration(
                           labelText: "Preferred Date *",
                           hintText: "YYYY-MM-DD",
@@ -477,6 +485,7 @@ class _FuneralMassScreenState extends State<FuneralMassScreen> {
                       const SizedBox(height: 12),
                       TextFormField(
                         controller: _preferredTimeController,
+                        readOnly: true,
                         decoration: const InputDecoration(
                           labelText: "Preferred Time Slot *",
                           hintText: "HH:MM",
