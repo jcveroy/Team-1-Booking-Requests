@@ -154,9 +154,10 @@ class _FuneralMassDetailScreenState extends State<FuneralMassDetailScreen> {
       builder: (context, parishProvider, priestProvider, _) {
         final authProvider = Provider.of<AuthProvider>(context, listen: false);
         final parishId = _booking?.parishId ?? parishProvider.selectedParish?.id;
-        if (parishId != null && priestProvider.priests.isEmpty) {
-          priestProvider.loadPriestsByParish(parishId, token: authProvider.token);
-        }
+
+        //if (parishId != null && priestProvider.priests.isEmpty) {
+       //   priestProvider.loadPriestsByParish(parishId, token: authProvider.token);
+       // }
 
         final validPriestId = _selectedPriestId != null &&
             priestProvider.priests.any((p) => p.id == _selectedPriestId)
