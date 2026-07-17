@@ -843,17 +843,33 @@ class _EucharistDetailScreenState extends State<EucharistDetailScreen> {
                         // Preferred Priest dropdown
                         Consumer<PriestProvider>(
                           builder: (context, priestProvider, child) {
-                            if (priestProvider.priests.isEmpty && _booking != null) {
-                              final authProvider = Provider.of<AuthProvider>(context, listen: false);
-                              final parishProvider = Provider.of<ParishProvider>(context, listen: false);
-                              if (parishProvider.selectedParish != null && authProvider.token != null) {
-                                WidgetsBinding.instance.addPostFrameCallback((_) {
-                                  priestProvider.loadPriestsByParish(parishProvider.selectedParish!.id!, token: authProvider.token);
-                                });
-                              }
-                            }
-                            final validPriestId = _selectedPriestId != null && 
-                                priestProvider.priests.any((p) => p.id == _selectedPriestId) 
+
+                            /*
+                           * [QA FIX / BUG RESOLUTION]
+                           * Removed redundant priest fetching logic from the build cycle.
+                           *
+                           * Root Cause: Triggered an infinite markNeedsBuild() render loop and
+                           * backend 429 rate-limiting. If a parish had zero assigned priests,
+                           * `priestProvider.priests.isEmpty` always evaluated to true, causing
+                           * an endless cycle of post-frame fetch requests and UI rebuilds.
+                           *
+                           * Resolution: Priest data fetching is now strictly isolated to the
+                           * asynchronous _loadBooking() method during screen initialization.
+                           */
+
+
+                          //  if (priestProvider.priests.isEmpty && _booking != null) {
+                            //  final authProvider = Provider.of<AuthProvider>(context, listen: false);
+                              //final parishProvider = Provider.of<ParishProvider>(context, listen: false);
+                              //if (parishProvider.selectedParish != null && authProvider.token != null) {
+                                //WidgetsBinding.instance.addPostFrameCallback((_) {
+                                 // priestProvider.loadPriestsByParish(parishProvider.selectedParish!.id!, token: authProvider.token);
+                               // });
+                              //}
+                            //}
+
+                            final validPriestId = _selectedPriestId != null &&
+                                priestProvider.priests.any((p) => p.id == _selectedPriestId)
                                 ? _selectedPriestId : null;
                             return Padding(
                               padding: const EdgeInsets.only(bottom: 12),

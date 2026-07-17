@@ -575,6 +575,16 @@ class _ConfirmationDetailScreenState extends State<ConfirmationDetailScreen> {
             // Preferred Priest dropdown
             Consumer<PriestProvider>(
               builder: (context, priestProvider, child) {
+                /*
+               * QA FIX: Removed redundant priest-loading logic from the build() cycle.
+               *
+               * Purpose: The previous implementation triggered an infinite rebuild loop
+               * (markNeedsBuild exception) and subsequent '429 Too Many Requests' errors
+               * because it persistently attempted to fetch data whenever the UI rebuilt
+               * and found an empty priest list. Data is now correctly loaded only once
+               * during the asynchronous _loadBooking() screen initialization.
+               */
+                /*
                 if (priestProvider.priests.isEmpty && _booking != null) {
                   final authProvider =
                       Provider.of<AuthProvider>(context, listen: false);
@@ -588,7 +598,7 @@ class _ConfirmationDetailScreenState extends State<ConfirmationDetailScreen> {
                           token: authProvider.token);
                     });
                   }
-                }
+                }*/
                 final validPriestId = _selectedPriestId != null &&
                         priestProvider.priests
                             .any((p) => p.id == _selectedPriestId)
